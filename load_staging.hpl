@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>Project</name>
+    <name>load_staging</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -36,6 +36,106 @@
       <enabled>Y</enabled>
     </hop>
   </order>
+  <transform>
+    <name>Historical Events file input</name>
+    <type>CSVInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <filename>/home/martim/Desktop/GTI/Project/DataSources/historical_events.csv</filename>
+    <filename_field/>
+    <rownum_field/>
+    <include_filename>N</include_filename>
+    <separator>,</separator>
+    <enclosure>"</enclosure>
+    <header>Y</header>
+    <buffer_size>50000</buffer_size>
+    <schemaDefinition/>
+    <ignoreFields>N</ignoreFields>
+    <lazy_conversion>Y</lazy_conversion>
+    <add_filename_result>N</add_filename_result>
+    <parallel>N</parallel>
+    <newline_possible>N</newline_possible>
+    <encoding/>
+    <fields>
+      <field>
+        <name>year</name>
+        <type>Integer</type>
+        <format>#</format>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>15</length>
+        <precision>0</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>country_iso3</name>
+        <type>String</type>
+        <format/>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>3</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>country_name</name>
+        <type>String</type>
+        <format/>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>14</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>event</name>
+        <type>String</type>
+        <format/>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>101</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>category</name>
+        <type>String</type>
+        <format/>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>48</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>economic_impact</name>
+        <type>String</type>
+        <format/>
+        <currency>$</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>37</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>208</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
   <transform>
     <name>Maddison Indicators file input</name>
     <type>CSVInput</type>
@@ -151,7 +251,7 @@
     <always_drop_and_recreate>N</always_drop_and_recreate>
     <auto_update_table_structure>N</auto_update_table_structure>
     <change_column_types>N</change_column_types>
-    <commit>1000</commit>
+    <commit>4350</commit>
     <connection>staging</connection>
     <drop_columns>N</drop_columns>
     <fields>
@@ -179,106 +279,6 @@
     </GUI>
   </transform>
   <transform>
-    <name>Historical Events file input</name>
-    <type>CSVInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <filename>/home/martim/Desktop/GTI/Project/DataSources/historical_events.csv</filename>
-    <filename_field/>
-    <rownum_field/>
-    <include_filename>N</include_filename>
-    <separator>,</separator>
-    <enclosure>"</enclosure>
-    <header>Y</header>
-    <buffer_size>50000</buffer_size>
-    <schemaDefinition/>
-    <ignoreFields>N</ignoreFields>
-    <lazy_conversion>Y</lazy_conversion>
-    <add_filename_result>N</add_filename_result>
-    <parallel>N</parallel>
-    <newline_possible>N</newline_possible>
-    <encoding/>
-    <fields>
-      <field>
-        <name>year</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>country_iso3</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>3</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>country_name</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>14</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>event</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>101</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>category</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>48</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>economic_impact</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>37</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>208</xloc>
-      <yloc>240</yloc>
-    </GUI>
-  </transform>
-  <transform>
     <name>Table output 2</name>
     <type>TableOutput</type>
     <description/>
@@ -302,14 +302,11 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
-    <return_field/>
     <return_keys>N</return_keys>
     <schema>staging</schema>
     <specify_fields>N</specify_fields>
     <table>historical_events</table>
-    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
@@ -318,6 +315,45 @@
     <GUI>
       <xloc>384</xloc>
       <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table output 3</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>11372</commit>
+    <connection>staging</connection>
+    <drop_columns>N</drop_columns>
+    <fields>
+</fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>staging</schema>
+    <specify_fields>N</specify_fields>
+    <table>wdi_indicators</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>336</yloc>
     </GUI>
   </transform>
   <transform>
@@ -417,48 +453,6 @@
     <attributes/>
     <GUI>
       <xloc>208</xloc>
-      <yloc>336</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Table output 3</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <add_columns>N</add_columns>
-    <always_drop_and_recreate>N</always_drop_and_recreate>
-    <auto_update_table_structure>N</auto_update_table_structure>
-    <change_column_types>N</change_column_types>
-    <commit>11372</commit>
-    <connection>staging</connection>
-    <drop_columns>N</drop_columns>
-    <fields>
-</fields>
-    <ignore_errors>N</ignore_errors>
-    <only_when_have_rows>N</only_when_have_rows>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <return_field/>
-    <return_keys>N</return_keys>
-    <schema>staging</schema>
-    <specify_fields>N</specify_fields>
-    <table>wdi_indicators</table>
-    <tablename_field/>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_in_table>Y</tablename_in_table>
-    <truncate>N</truncate>
-    <use_batch>Y</use_batch>
-    <attributes/>
-    <GUI>
-      <xloc>384</xloc>
       <yloc>336</yloc>
     </GUI>
   </transform>
