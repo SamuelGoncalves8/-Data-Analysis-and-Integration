@@ -47,7 +47,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>/home/martim/Desktop/GTI/Project/DataSources/historical_events.csv</filename>
+    <filename>${PROJECT_HOME}/DataSources/historical_events.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -147,7 +147,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>/home/martim/Desktop/GTI/Project/DataSources/maddison_indicators.csv</filename>
+    <filename>${PROJECT_HOME}/DataSources/maddison_indicators.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -260,14 +260,11 @@
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
-    <return_field/>
     <return_keys>N</return_keys>
     <schema>staging</schema>
     <specify_fields>N</specify_fields>
     <table>maddison_indicators</table>
-    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
@@ -367,7 +364,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>/home/martim/Desktop/GTI/Project/DataSources/wdi_indicators.csv</filename>
+    <filename>${PROJECT_HOME}/DataSources/wdi_indicators.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
