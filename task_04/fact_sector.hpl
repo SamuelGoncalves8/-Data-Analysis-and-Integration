@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>fact_sector</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2026/10/07 20:21:48.421</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2026/10/07 20:21:48.421</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>Agrculture</from>
+      <to>Append streams</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Industry</from>
+      <to>Append streams</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams</from>
+      <to>Append streams 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Manufacturing</from>
+      <to>Append streams 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams 2</from>
+      <to>Append streams 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Services</from>
+      <to>Append streams 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams 3</from>
+      <to>Database lookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Database lookup</from>
+      <to>Database lookup 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Database lookup 2</from>
+      <to>Database lookup 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Database lookup 3</from>
+      <to>Select values</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Table output</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Agrculture</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Agriculture' as sector_name,
+MAX(CASE WHEN indicator_code = 'NV.AGR.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.AGR.TOTL.CD' THEN value END) AS value_added_usd,
+MAX(CASE WHEN indicator_code = 'SL.AGR.EMPL.ZS' THEN value END) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.AGR.TOTL.ZS','NV.AGR.TOTL.CD', 'SL.AGR.EMPL.ZS')
+GROUP BY country_iso3, year, sector_name
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>112</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Industry</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Industry' as sector_name,
+MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.CD' THEN value END) AS value_added_usd,
+MAX(CASE WHEN indicator_code = 'SL.IND.EMPL.ZS' THEN value END) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.IND.TOTL.ZS','NV.IND.TOTL.CD', 'SL.IND.EMPL.ZS')
+GROUP BY country_iso3, year, sector_name
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>192</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Manufacturing</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Manufacturing' as sector_name,
+MAX(CASE WHEN indicator_code = 'NV.IND.MANF.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.IND.MANF.CD' THEN value END) AS value_added_usd,
+CAST(NULL AS DECIMAL(20,6)) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.IND.MANF.CD','NV.IND.MANF.ZS')
+GROUP BY country_iso3, year, sector_name
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Services</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Services' as sector_name,
+MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.CD' THEN value END) AS value_added_usd,
+MAX(CASE WHEN indicator_code = 'SL.SRV.EMPL.ZS' THEN value END) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.SRV.TOTL.ZS','NV.SRV.TOTL.CD', 'SL.SRV.EMPL.ZS')
+GROUP BY country_iso3, year, sector_name
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>352</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Agrculture</head_name>
+    <tail_name>Industry</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>160</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams 2</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Append streams</head_name>
+    <tail_name>Manufacturing</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams 3</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Append streams 2</head_name>
+    <tail_name>Services</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>352</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Database lookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>ProjectDW</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>iso3_code</field>
+        <name>country_iso3</name>
+        <name2/>
+      </key>
+      <orderby/>
+      <schema>ProjectDW</schema>
+      <table>dim_country</table>
+      <value>
+        <default/>
+        <name>country_key</name>
+        <rename>country_key</rename>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Database lookup 2</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>ProjectDW</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>year</field>
+        <name>year</name>
+        <name2/>
+      </key>
+      <orderby/>
+      <schema>ProjectDW</schema>
+      <table>dim_time</table>
+      <value>
+        <default/>
+        <name>time_key</name>
+        <rename>time_key</rename>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Database lookup 3</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>ProjectDW</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>sector_name</field>
+        <name>sector_name</name>
+        <name2/>
+      </key>
+      <orderby/>
+      <schema>ProjectDW</schema>
+      <table>dim_sector</table>
+      <value>
+        <default/>
+        <name>sector_key</name>
+        <rename>sector_key</rename>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>672</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>value_added_pct_gdp</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>value_added_usd</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>employment_pct</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>country_key</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>time_key</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>sector_key</name>
+        <precision>-2</precision>
+        <rename/>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>784</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>ProjectDW</connection>
+    <drop_columns>N</drop_columns>
+    <fields>
+</fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_field/>
+    <return_keys>N</return_keys>
+    <schema>ProjectDW</schema>
+    <specify_fields>N</specify_fields>
+    <table>fact_sector</table>
+    <tablename_field/>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>896</xloc>
+      <yloc>240</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>

@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pipeline>
+  <info>
+    <name>fact_economy</name>
+    <name_sync_with_filename>Y</name_sync_with_filename>
+    <description/>
+    <extended_description/>
+    <pipeline_version/>
+    <pipeline_type>Normal</pipeline_type>
+    <parameters>
+    </parameters>
+    <capture_transform_performance>N</capture_transform_performance>
+    <transform_performance_capturing_delay>1000</transform_performance_capturing_delay>
+    <transform_performance_capturing_size_limit>100</transform_performance_capturing_size_limit>
+    <created_user>-</created_user>
+    <created_date>2026/10/07 18:54:14.217</created_date>
+    <modified_user>-</modified_user>
+    <modified_date>2026/10/07 18:54:14.217</modified_date>
+  </info>
+  <notepads>
+  </notepads>
+  <order>
+    <hop>
+      <from>Coalesce Fields</from>
+      <to>Select values</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Database lookup</from>
+      <to>Database lookup 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Database lookup 2</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Merge join</from>
+      <to>Coalesce Fields</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Database lookup</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows 2</from>
+      <to>Merge join</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Table input</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Table input 2</from>
+      <to>Sort rows 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values 2</from>
+      <to>Table output</to>
+      <enabled>Y</enabled>
+    </hop>
+  </order>
+  <transform>
+    <name>Coalesce Fields</name>
+    <type>Coalesce</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <empty_is_null>N</empty_is_null>
+    <fields>
+      <field>
+        <input>country_iso3, country_iso3_1</input>
+        <name>iso3_code</name>
+        <remove>N</remove>
+        <type>None</type>
+      </field>
+      <field>
+        <input>year_temp, year_temp_1</input>
+        <name>year</name>
+        <remove>N</remove>
+        <type>Integer</type>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>560</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Database lookup</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>ProjectDW</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>iso3_code</field>
+        <name>iso3_code</name>
+      </key>
+      <schema>ProjectDW</schema>
+      <table>dim_country</table>
+      <value>
+        <name>country_key</name>
+        <rename>country_key</rename>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>832</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Database lookup 2</name>
+    <type>DBLookup</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <cache>N</cache>
+    <cache_load_all>N</cache_load_all>
+    <cache_size>0</cache_size>
+    <connection>ProjectDW</connection>
+    <lookup>
+      <eat_row_on_failure>N</eat_row_on_failure>
+      <fail_on_multiple>N</fail_on_multiple>
+      <key>
+        <condition>=</condition>
+        <field>year</field>
+        <name>year</name>
+      </key>
+      <schema>ProjectDW</schema>
+      <table>dim_time</table>
+      <value>
+        <name>time_key</name>
+        <rename>time_key</rename>
+        <trim_type>none</trim_type>
+        <type>Integer</type>
+      </value>
+    </lookup>
+    <attributes/>
+    <GUI>
+      <xloc>704</xloc>
+      <yloc>336</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Merge join</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <join_type>FULL OUTER</join_type>
+    <keys_1>
+      <key>country_iso3</key>
+      <key>year_temp</key>
+    </keys_1>
+    <keys_2>
+      <key>country_iso3</key>
+      <key>year_temp</key>
+    </keys_2>
+    <transform1>Sort rows</transform1>
+    <transform2>Sort rows 2</transform2>
+    <attributes/>
+    <GUI>
+      <xloc>432</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>gdp_per_capita</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>gdp_growth_pct</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>exports_pct_gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>imports_pct_gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>iso3_code</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>year</name>
+        <precision>-2</precision>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>704</xloc>
+      <yloc>224</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Select values 2</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-2</length>
+        <name>gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>gdp_per_capita</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>gdp_growth_pct</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>exports_pct_gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>imports_pct_gdp</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>country_key</name>
+        <precision>-2</precision>
+      </field>
+      <field>
+        <length>-2</length>
+        <name>time_key</name>
+        <precision>-2</precision>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>560</xloc>
+      <yloc>336</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>country_iso3</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>year_temp</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>288</xloc>
+      <yloc>144</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Sort rows 2</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compress>N</compress>
+    <directory>${java.io.tmpdir}</directory>
+    <fields>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>country_iso3</name>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <name>year_temp</name>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <sort_prefix>out</sort_prefix>
+    <sort_size>1000000</sort_size>
+    <unique_rows>N</unique_rows>
+    <attributes/>
+    <GUI>
+      <xloc>288</xloc>
+      <yloc>288</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year AS year_temp,
+MAX(CASE WHEN indicator_code = 'gdp' THEN value END) AS gdp,
+MAX(CASE WHEN indicator_code = 'gdppc' THEN value END) AS gdp_per_capita
+FROM maddison_indicators
+WHERE indicator_code IN ('gdp','gdppc')
+GROUP BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>144</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table input 2</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year AS year_temp,
+MAX(CASE WHEN indicator_code = 'NY.GDP.MKTP.KD.ZG' THEN value END) AS gdp_growth_pct,
+MAX(CASE WHEN indicator_code = 'NE.EXP.GNFS.ZS' THEN value END) AS exports_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NE.IMP.GNFS.ZS' THEN value END) AS imports_pct_gdp
+FROM wdi_indicators
+WHERE indicator_code IN ('NY.GDP.MKTP.KD.ZG', 'NE.EXP.GNFS.ZS', 'NE.IMP.GNFS.ZS')
+GROUP BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>288</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Table output</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <add_columns>N</add_columns>
+    <always_drop_and_recreate>N</always_drop_and_recreate>
+    <auto_update_table_structure>N</auto_update_table_structure>
+    <change_column_types>N</change_column_types>
+    <commit>1000</commit>
+    <connection>ProjectDW</connection>
+    <drop_columns>N</drop_columns>
+    <fields>
+</fields>
+    <ignore_errors>N</ignore_errors>
+    <only_when_have_rows>N</only_when_have_rows>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <return_keys>N</return_keys>
+    <schema>ProjectDW</schema>
+    <specify_fields>N</specify_fields>
+    <table>fact_economy</table>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_in_table>Y</tablename_in_table>
+    <truncate>N</truncate>
+    <use_batch>Y</use_batch>
+    <attributes/>
+    <GUI>
+      <xloc>432</xloc>
+      <yloc>336</yloc>
+    </GUI>
+  </transform>
+  <transform_error_handling>
+  </transform_error_handling>
+  <attributes/>
+</pipeline>
