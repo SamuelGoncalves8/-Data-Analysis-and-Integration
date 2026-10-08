@@ -12,13 +12,13 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
+    <Dimension type="TimeDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
       <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_key">
         <Table name="dim_time">
         </Table>
-        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
         </Level>
-        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
@@ -46,13 +46,13 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
+    <Dimension type="TimeDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
       <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_key">
         <Table name="dim_time">
         </Table>
-        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
         </Level>
-        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
@@ -68,33 +68,33 @@
   <Cube name="Sector" visible="true" cache="true" enabled="true">
     <Table name="fact_sector">
     </Table>
-    <Dimension type="StandardDimension" visible="true" foreignKey="country_key" name="Country">
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_key" highCardinality="false" name="Country">
       <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_key">
         <Table name="dim_country">
         </Table>
-        <Level name="Country Group" visible="true" table="dim_country" column="country_group" type="String" uniqueMembers="false" levelType="Regular">
+        <Level name="Country Group" visible="true" table="dim_country" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="Country" visible="true" table="dim_country" column="country_name" type="String" uniqueMembers="true" levelType="Regular">
+        <Level name="Country" visible="true" table="dim_country" column="country_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" name="Time">
+    <Dimension type="TimeDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
       <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" primaryKey="time_key">
         <Table name="dim_time">
         </Table>
-        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular">
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="TimeYears" hideMemberIf="Never">
         </Level>
-        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular">
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="sector_key" name="Sector">
+    <Dimension type="StandardDimension" visible="true" foreignKey="sector_key" highCardinality="false" name="Sector">
       <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_key">
         <Table name="dim_sector">
         </Table>
-        <Level name="Broad" visible="true" table="dim_sector" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular">
+        <Level name="Broad" visible="true" table="dim_sector" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
         </Level>
-        <Level name="Sector" visible="true" table="dim_sector" column="sector_name" type="String" uniqueMembers="true" levelType="Regular">
+        <Level name="Sector" visible="true" table="dim_sector" column="sector_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
         </Level>
       </Hierarchy>
     </Dimension>
