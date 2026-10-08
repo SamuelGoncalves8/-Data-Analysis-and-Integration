@@ -1,0 +1,108 @@
+<Schema name="New Schema1">
+  <Cube name="Economy" visible="true" cache="true" enabled="true">
+    <Table name="fact_economy">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_key" highCardinality="false" name="Country">
+      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_key">
+        <Table name="dim_country">
+        </Table>
+        <Level name="Country Group" visible="true" table="dim_country" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Country" visible="true" table="dim_country" column="country_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
+      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_key">
+        <Table name="dim_time">
+        </Table>
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="GDP" column="gdp" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="GDP per Capita" column="gdp_per_capita" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="GDP Growth" column="gdp_growth_pct" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="Exports" column="exports_pct_gdp" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="Imports" column="imports_pct_gdp" aggregator="avg" visible="true">
+    </Measure>
+  </Cube>
+  <Cube name="Society" visible="true" cache="true" enabled="true">
+    <Table name="fact_society">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_key" highCardinality="false" name="Country">
+      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_key">
+        <Table name="dim_country">
+        </Table>
+        <Level name="Country Group" visible="true" table="dim_country" column="country_group" type="String" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Country" visible="true" table="dim_country" column="country_name" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" highCardinality="false" name="Time">
+      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" allMemberName="All Times" primaryKey="time_key">
+        <Table name="dim_time">
+        </Table>
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Population" column="population" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="GNI per Capita" column="gni_per_capita" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="Life Expectancy" column="life_expectancy" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="Urban Population" column="urban_pop_pct" aggregator="avg" visible="true">
+    </Measure>
+  </Cube>
+  <Cube name="Sector" visible="true" cache="true" enabled="true">
+    <Table name="fact_sector">
+    </Table>
+    <Dimension type="StandardDimension" visible="true" foreignKey="country_key" name="Country">
+      <Hierarchy name="Country Hierarchy" visible="true" hasAll="true" allMemberName="All Countries" primaryKey="country_key">
+        <Table name="dim_country">
+        </Table>
+        <Level name="Country Group" visible="true" table="dim_country" column="country_group" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+        <Level name="Country" visible="true" table="dim_country" column="country_name" type="String" uniqueMembers="true" levelType="Regular">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="time_key" name="Time">
+      <Hierarchy name="Time Hierarchy" visible="true" hasAll="true" primaryKey="time_key">
+        <Table name="dim_time">
+        </Table>
+        <Level name="Decade" visible="true" table="dim_time" column="decade" type="Numeric" uniqueMembers="false" levelType="Regular">
+        </Level>
+        <Level name="Year" visible="true" table="dim_time" column="year" type="Numeric" uniqueMembers="true" levelType="Regular">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="sector_key" name="Sector">
+      <Hierarchy name="Sector Hierarchy" visible="true" hasAll="true" allMemberName="All Sectors" primaryKey="sector_key">
+        <Table name="dim_sector">
+        </Table>
+        <Level name="Broad" visible="true" table="dim_sector" column="broad_sector" type="String" uniqueMembers="false" levelType="Regular">
+        </Level>
+        <Level name="Sector" visible="true" table="dim_sector" column="sector_name" type="String" uniqueMembers="true" levelType="Regular">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Value Added PCT" column="value_added_pct_gdp" aggregator="avg" visible="true">
+    </Measure>
+    <Measure name="Value Added USD" column="value_added_usd" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Employment" column="employment_pct" aggregator="avg" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
