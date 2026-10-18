@@ -98,11 +98,11 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Measure name="Value Added PCT" column="value_added_pct_gdp" aggregator="avg" visible="true">
+    <Measure name="Value Added PCT" column="value_added_pct_gdp" aggregator="sum" visible="true">
     </Measure>
     <Measure name="Value Added USD" column="value_added_usd" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="Employment" column="employment_pct" aggregator="avg" visible="true">
+    <Measure name="Employment" column="employment_pct" aggregator="sum" visible="true">
     </Measure>
   </Cube>
 </Schema>

@@ -31,31 +31,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Append streams</from>
-      <to>Append streams 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Manufacturing</from>
-      <to>Append streams 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Append streams 2</from>
-      <to>Append streams 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Services</from>
-      <to>Append streams 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Append streams 3</from>
-      <to>Database lookup</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>Database lookup</from>
       <to>Database lookup 2</to>
       <enabled>Y</enabled>
@@ -73,6 +48,41 @@
     <hop>
       <from>Select values</from>
       <to>Table output</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Other Industries</from>
+      <to>Append streams 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams</from>
+      <to>Append streams 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Manufacturing</from>
+      <to>Append streams 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams 2</from>
+      <to>Append streams 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Services</from>
+      <to>Append streams 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams 3</from>
+      <to>Append streams 4</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Append streams 4</from>
+      <to>Database lookup</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -106,93 +116,6 @@ ORDER BY country_iso3, year;</sql>
     </GUI>
   </transform>
   <transform>
-    <name>Industry</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT country_iso3, year, 'Industry' as sector_name,
-MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
-MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.CD' THEN value END) AS value_added_usd,
-MAX(CASE WHEN indicator_code = 'SL.IND.EMPL.ZS' THEN value END) AS employment_pct
-FROM wdi_indicators
-WHERE indicator_code IN ('NV.IND.TOTL.ZS','NV.IND.TOTL.CD', 'SL.IND.EMPL.ZS')
-GROUP BY country_iso3, year, sector_name
-ORDER BY country_iso3, year;</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>192</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Manufacturing</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT country_iso3, year, 'Manufacturing' as sector_name,
-MAX(CASE WHEN indicator_code = 'NV.IND.MANF.ZS' THEN value END) AS value_added_pct_gdp,
-MAX(CASE WHEN indicator_code = 'NV.IND.MANF.CD' THEN value END) AS value_added_usd,
-CAST(NULL AS DECIMAL(20,6)) AS employment_pct
-FROM wdi_indicators
-WHERE indicator_code IN ('NV.IND.MANF.CD','NV.IND.MANF.ZS')
-GROUP BY country_iso3, year, sector_name
-ORDER BY country_iso3, year;</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>272</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Services</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>staging</connection>
-    <execute_each_row>N</execute_each_row>
-    <limit>0</limit>
-    <sql>SELECT country_iso3, year, 'Services' as sector_name,
-MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
-MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.CD' THEN value END) AS value_added_usd,
-MAX(CASE WHEN indicator_code = 'SL.SRV.EMPL.ZS' THEN value END) AS employment_pct
-FROM wdi_indicators
-WHERE indicator_code IN ('NV.SRV.TOTL.ZS','NV.SRV.TOTL.CD', 'SL.SRV.EMPL.ZS')
-GROUP BY country_iso3, year, sector_name
-ORDER BY country_iso3, year;</sql>
-    <variables_active>N</variables_active>
-    <attributes/>
-    <GUI>
-      <xloc>112</xloc>
-      <yloc>352</yloc>
-    </GUI>
-  </transform>
-  <transform>
     <name>Append streams</name>
     <type>Append</type>
     <description/>
@@ -209,44 +132,6 @@ ORDER BY country_iso3, year;</sql>
     <GUI>
       <xloc>240</xloc>
       <yloc>160</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Append streams 2</name>
-    <type>Append</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <head_name>Append streams</head_name>
-    <tail_name>Manufacturing</tail_name>
-    <attributes/>
-    <GUI>
-      <xloc>240</xloc>
-      <yloc>272</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>Append streams 3</name>
-    <type>Append</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <head_name>Append streams 2</head_name>
-    <tail_name>Services</tail_name>
-    <attributes/>
-    <GUI>
-      <xloc>240</xloc>
-      <yloc>352</yloc>
     </GUI>
   </transform>
   <transform>
@@ -286,8 +171,8 @@ ORDER BY country_iso3, year;</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>384</xloc>
-      <yloc>240</yloc>
+      <xloc>432</xloc>
+      <yloc>320</yloc>
     </GUI>
   </transform>
   <transform>
@@ -327,8 +212,8 @@ ORDER BY country_iso3, year;</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>528</xloc>
-      <yloc>240</yloc>
+      <xloc>560</xloc>
+      <yloc>320</yloc>
     </GUI>
   </transform>
   <transform>
@@ -368,8 +253,66 @@ ORDER BY country_iso3, year;</sql>
     </lookup>
     <attributes/>
     <GUI>
-      <xloc>672</xloc>
-      <yloc>240</yloc>
+      <xloc>688</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Industry</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Industry' AS sector_name,
+CAST(NULL AS DECIMAL(20,6)) AS value_added_pct_gdp,
+CAST(NULL AS DECIMAL(20,6)) AS value_added_usd,
+MAX(CASE WHEN indicator_code = 'SL.IND.EMPL.ZS' THEN value END) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code = 'SL.IND.EMPL.ZS'
+GROUP BY country_iso3, year
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>192</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Manufacturing</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Manufacturing' AS sector_name,
+MAX(CASE WHEN indicator_code = 'NV.IND.MANF.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.IND.MANF.CD' THEN value END) AS value_added_usd,
+CAST(NULL AS DECIMAL(20,6)) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.IND.MANF.CD', 'NV.IND.MANF.ZS')
+GROUP BY country_iso3, year
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
@@ -424,8 +367,37 @@ ORDER BY country_iso3, year;</sql>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>784</xloc>
-      <yloc>240</yloc>
+      <xloc>816</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Services</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT country_iso3, year, 'Services' as sector_name,
+MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
+MAX(CASE WHEN indicator_code = 'NV.SRV.TOTL.CD' THEN value END) AS value_added_usd,
+MAX(CASE WHEN indicator_code = 'SL.SRV.EMPL.ZS' THEN value END) AS employment_pct
+FROM wdi_indicators
+WHERE indicator_code IN ('NV.SRV.TOTL.ZS','NV.SRV.TOTL.CD', 'SL.SRV.EMPL.ZS')
+GROUP BY country_iso3, year, sector_name
+ORDER BY country_iso3, year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>480</yloc>
     </GUI>
   </transform>
   <transform>
@@ -452,22 +424,120 @@ ORDER BY country_iso3, year;</sql>
     <only_when_have_rows>N</only_when_have_rows>
     <partitioning_daily>N</partitioning_daily>
     <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
     <partitioning_monthly>Y</partitioning_monthly>
-    <return_field/>
     <return_keys>N</return_keys>
     <schema>ProjectDW</schema>
     <specify_fields>N</specify_fields>
     <table>fact_sector</table>
-    <tablename_field/>
     <tablename_in_field>N</tablename_in_field>
     <tablename_in_table>Y</tablename_in_table>
     <truncate>N</truncate>
     <use_batch>Y</use_batch>
     <attributes/>
     <GUI>
-      <xloc>896</xloc>
-      <yloc>240</yloc>
+      <xloc>944</xloc>
+      <yloc>320</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Other Industries</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>staging</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT i.country_iso3, i.year, 'Other industries' AS sector_name,
+i.value_added_pct_gdp - m.value_added_pct_gdp AS value_added_pct_gdp,
+i.value_added_usd - m.value_added_usd AS value_added_usd,
+CAST(NULL AS DECIMAL(20,6)) AS employment_pct
+FROM (
+    SELECT country_iso3, year,
+    MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.ZS' THEN value END) AS value_added_pct_gdp,
+    MAX(CASE WHEN indicator_code = 'NV.IND.TOTL.CD' THEN value END) AS value_added_usd
+    FROM wdi_indicators
+    WHERE indicator_code IN ('NV.IND.TOTL.ZS', 'NV.IND.TOTL.CD')
+    GROUP BY country_iso3, year
+) i
+JOIN (
+    SELECT country_iso3, year,
+    MAX(CASE WHEN indicator_code = 'NV.IND.MANF.ZS' THEN value END) AS value_added_pct_gdp,
+    MAX(CASE WHEN indicator_code = 'NV.IND.MANF.CD' THEN value END) AS value_added_usd
+    FROM wdi_indicators
+    WHERE indicator_code IN ('NV.IND.MANF.ZS', 'NV.IND.MANF.CD')
+    GROUP BY country_iso3, year
+) m
+ON i.country_iso3 = m.country_iso3
+AND i.year = m.year
+ORDER BY i.country_iso3, i.year;</sql>
+    <variables_active>N</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>112</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams 2</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Append streams</head_name>
+    <tail_name>Other Industries</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>272</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams 3</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Append streams 2</head_name>
+    <tail_name>Manufacturing</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>368</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Append streams 4</name>
+    <type>Append</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <head_name>Append streams 3</head_name>
+    <tail_name>Services</tail_name>
+    <attributes/>
+    <GUI>
+      <xloc>240</xloc>
+      <yloc>480</yloc>
     </GUI>
   </transform>
   <transform_error_handling>
