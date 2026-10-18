@@ -2,7 +2,8 @@ WITH
     MEMBER [Measures].[Previous Decade] AS
         ([Measures].[GDP per Capita], [Time].CurrentMember.PrevMember)
     MEMBER [Measures].[Decade Change] AS
-        [Measures].[GDP per Capita] / [Measures].[Previous Decade] - 1,
+        IIF(IsEmpty([Measures].[Previous Decade]), NULL,
+            [Measures].[GDP per Capita] / [Measures].[Previous Decade] - 1),
         FORMAT_STRING = '#0.0%'
 SELECT
     {[Measures].[GDP per Capita], [Measures].[Previous Decade], [Measures].[Decade Change]} ON COLUMNS,

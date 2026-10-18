@@ -1,0 +1,12 @@
+WITH
+    MEMBER [Measures].[PT GDPpc] AS
+        ([Measures].[GDP per Capita], [Country].[Country].[Portugal])
+    MEMBER [Measures].[WE GDPpc] AS
+        ([Measures].[GDP per Capita], [Country].[Country Group].[Western Europe])
+    MEMBER [Measures].[PT to WE Ratio] AS
+        [Measures].[PT GDPpc] / [Measures].[WE GDPpc],
+        FORMAT_STRING = '#0.00%'
+SELECT
+    {[Measures].[PT GDPpc], [Measures].[WE GDPpc], [Measures].[PT to WE Ratio]} ON COLUMNS,
+    [Time].[Decade].Members ON ROWS
+FROM [Economy]
