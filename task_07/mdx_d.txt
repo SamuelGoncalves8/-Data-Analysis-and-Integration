@@ -1,9 +1,8 @@
-WITH MEMBER [Measures].[vs Portugal] AS
-    [Measures].[GDP per Capita] /
-    ([Measures].[GDP per Capita], [Country].[Country].[Portugal]),
-    FORMAT_STRING = '#0.00%'
-SELECT {[Time].[Decade].[1990], [Time].[Decade].[2000],
-    [Time].[Decade].[2010], [Time].[Decade].[2020]}
-    * {[Measures].[GDP per Capita], [Measures].[vs Portugal]} ON COLUMNS,
-    NON EMPTY [Country].[Country].Members ON ROWS
+WITH SET [Comparison Countries] AS
+    {[Country].[Country].[Portugal],
+    [Country].[Country Group].[Central/Eastern Europe].Children,
+    [Country].[Country Group].[Post-Soviet].Children}
+SELECT TAIL([Time].[Decade].Members, 4) ON COLUMNS,
+    [Comparison Countries] ON ROWS
 FROM [Economy]
+WHERE [Measures].[GDP per capita]

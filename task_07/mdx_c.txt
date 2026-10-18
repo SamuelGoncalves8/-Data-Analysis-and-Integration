@@ -1,12 +1,12 @@
 WITH
-    MEMBER [Measures].[PT GDPpc] AS
-        ([Measures].[GDP per Capita], [Country].[Country].[Portugal])
-    MEMBER [Measures].[WE GDPpc] AS
-        ([Measures].[GDP per Capita], [Country].[Country Group].[Western Europe])
-    MEMBER [Measures].[PT to WE Ratio] AS
-        [Measures].[PT GDPpc] / [Measures].[WE GDPpc],
+    MEMBER [Measures].[PT GDP per capita] AS
+        ([Measures].[GDP per capita], [Country].[Country].[Portugal])
+    MEMBER [Measures].[Western Europe GDP per capita] AS
+        ([Measures].[GDP per capita], [Country].[Country Group].[Western Europe])
+    MEMBER [Measures].[PT to Western Europe ratio] AS
+        [Measures].[PT GDP per capita] / [Measures].[Western Europe GDP per capita],
         FORMAT_STRING = '#0.00%'
 SELECT
-    {[Measures].[PT GDPpc], [Measures].[WE GDPpc], [Measures].[PT to WE Ratio]} ON COLUMNS,
+    {[Measures].[PT GDP per capita], [Measures].[Western Europe GDP per capita], [Measures].[PT to Western Europe ratio]} ON COLUMNS,
     [Time].[Decade].Members ON ROWS
 FROM [Economy]

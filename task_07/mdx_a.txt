@@ -3,10 +3,10 @@ WITH
         ([Measures].[GDP per Capita], [Time].CurrentMember.PrevMember)
     MEMBER [Measures].[Decade Change] AS
         IIF(IsEmpty([Measures].[Previous Decade]), NULL,
-            [Measures].[GDP per Capita] / [Measures].[Previous Decade] - 1),
+            [Measures].[GDP per capita] / [Measures].[Previous Decade] - 1),
         FORMAT_STRING = '#0.0%'
 SELECT
-    {[Measures].[GDP per Capita], [Measures].[Previous Decade], [Measures].[Decade Change]} ON COLUMNS,
+    {[Measures].[GDP per capita], [Measures].[Previous Decade], [Measures].[Decade Change]} ON COLUMNS,
     [Time].[Decade].Members ON ROWS
 FROM [Economy]
 WHERE ([Country].[Country].[Portugal])

@@ -1,8 +1,8 @@
-WITH MEMBER [Measures].[GDPpc relative to Portugal] AS
-    [Measures].[GDP per Capita] /
-    ([Measures].[GDP per Capita], [Country].[Country].[Portugal]),
+WITH MEMBER [Measures].[GDP per capita relative to Portugal] AS
+    [Measures].[GDP per capita] /
+    ([Measures].[GDP per capita], [Country].[Country].[Portugal]),
     FORMAT_STRING = '#0.0%'
 SELECT [Time].[Decade].Members ON COLUMNS,
     [Country].[Country Group].[Western Europe].Children ON ROWS
 FROM [Economy]
-WHERE [Measures].[GDPpc relative to Portugal]
+WHERE [Measures].[GDP per capita relative to Portugal]
