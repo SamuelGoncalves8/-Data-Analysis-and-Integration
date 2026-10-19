@@ -1,14 +1,14 @@
 1st Query
 WITH
-    MEMBER [Measures].[PT GDPpc] AS
-        ([Measures].[GDP per Capita], [Country].[Country].[Portugal])
-    MEMBER [Measures].[ES GDPpc] AS
-        ([Measures].[GDP per Capita], [Country].[Country].[Spain])
-    MEMBER [Measures].[PT to ES Ratio] AS
-        [Measures].[PT GDPpc] / [Measures].[ES GDPpc],
+    MEMBER [Measures].[Portugal GDP per capita] AS
+        ([Measures].[GDP per capita], [Country].[Country].[Portugal])
+    MEMBER [Measures].[Spain GDP per capita] AS
+        ([Measures].[GDP per capita], [Country].[Country].[Spain])
+    MEMBER [Measures].[Portugal to Spain ratio] AS
+        [Measures].[Portugal GDP per capita] / [Measures].[Spain GDP per capita],
         FORMAT_STRING = '#0.00%'
 SELECT
-    {[Measures].[PT GDPpc], [Measures].[ES GDPpc], [Measures].[PT to ES Ratio]} ON COLUMNS,
+    {[Measures].[Portugal GDP per capita], [Measures].[Spain GDP per capita], [Measures].[Portugal to Spain ratio]} ON COLUMNS,
     {[Time].[Decade].[1960], [Time].[Decade].[1970], [Time].[Decade].[1980],
     [Time].[Decade].[1990], [Time].[Decade].[2000], [Time].[Decade].[2010],
     [Time].[Decade].[2020]} ON ROWS
