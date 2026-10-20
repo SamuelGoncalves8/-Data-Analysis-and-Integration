@@ -25,22 +25,29 @@ FROM [Economy]
 
 query 2 Society
 WITH
-    SET [Countries] AS
-        {[Country].[Country].[Portugal], [Country].[Country].[Spain],
-            [Country].[Country].[France], [Country].[Country].[Germany],
-            [Country].[Country].[Belgium], [Country].[Country].[Italy],
-            [Country].[Country].[Ireland], [Country].[Country].[Greece]}
-    MEMBER [Measures].[GNI per capita relative to Portugal] AS
-        [Measures].[GNI per capita] /
-        ([Measures].[GNI per capita], [Country].[Country].[Portugal]),
+    SET [WE] AS [Country].[Country Group].[Western Europe].Children
+    SET [Rows] AS
+        {[Country].[Country].[Portugal], [WE]}
+    MEMBER [Measures].[Portugal GNI per capita compared to the country] AS
+        ([Measures].[GNI per capita], [Country].[Country].[Portugal]) /
+        IIF([Country].CurrentMember.Name = "Portugal",
+            Avg([WE], [Measures].[GNI per capita]),
+            [Measures].[GNI per capita]),
         FORMAT_STRING = '#0.0%'
-    MEMBER [Measures].[Life expectancy gap vs Portugal] AS
-        [Measures].[Life expectancy] -
-        ([Measures].[Life expectancy], [Country].[Country].[Portugal]),
+    MEMBER [Measures].[Percentual change] AS
+        IIF(IsEmpty(([Measures].[Portugal GNI per capita compared to the country], [Time].CurrentMember.PrevMember)), NULL,
+            ([Measures].[Portugal GNI per capita compared to the country] -
+                ([Measures].[Portugal GNI per capita compared to the country], [Time].CurrentMember.PrevMember))),
+        FORMAT_STRING = '+#0.0%;-#0.0%'
+    MEMBER [Measures].[Portugal life expectancy gap (in years)] AS
+        ([Measures].[Life expectancy], [Country].[Country].[Portugal]) -
+        IIF([Country].CurrentMember.Name = "Portugal",
+            Avg([WE], [Measures].[Life expectancy]),
+            [Measures].[Life expectancy]),
         FORMAT_STRING = '+#0.0;-#0.0'
 SELECT
     {[Time].[Decade].[1960] : [Time].[Decade].[2020]} ON COLUMNS,
-    NON EMPTY CrossJoin([Countries],
-        {[Measures].[GNI per capita], [Measures].[GNI per capita relative to Portugal],
-            [Measures].[Life expectancy], [Measures].[Life expectancy gap vs Portugal]}) ON ROWS
+    NON EMPTY CrossJoin([Rows],
+        {[Measures].[Portugal GNI per capita compared to the country], [Measures].[Percentual change],
+            [Measures].[Portugal life expectancy gap (in years)]}) ON ROWS
 FROM [Society]
