@@ -1,3 +1,4 @@
+query 1 Economy
 WITH
     MEMBER [Measures].[Previous Decade] AS
         ([Measures].[GDP per Capita], [Time].CurrentMember.PrevMember)
@@ -9,4 +10,12 @@ SELECT
     {[Measures].[GDP per capita], [Measures].[Previous Decade], [Measures].[Decade Change]} ON COLUMNS,
     [Time].[Decade].Members ON ROWS
 FROM [Economy]
+WHERE ([Country].[Country].[Portugal])
+
+query 2 Society
+SELECT
+    {[Measures].[GNI per Capita], [Measures].[Life Expectancy],
+        [Measures].[Urban Population]} ON COLUMNS,
+    [Time].[Decade].Members ON ROWS
+FROM [Society]
 WHERE ([Country].[Country].[Portugal])

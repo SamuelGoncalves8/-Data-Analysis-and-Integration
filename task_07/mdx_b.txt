@@ -1,8 +1,46 @@
-WITH MEMBER [Measures].[GDP per capita relative to Portugal] AS
-    [Measures].[GDP per capita] /
-    ([Measures].[GDP per capita], [Country].[Country].[Portugal]),
-    FORMAT_STRING = '#0.0%'
-SELECT [Time].[Decade].Members ON COLUMNS,
-    [Country].[Country Group].[Western Europe].Children ON ROWS
+query 1 Economy
+WITH
+    SET [Countries] AS
+        {[Country].[Country].[Portugal], [Country].[Country].[Spain],
+            [Country].[Country].[France], [Country].[Country].[Germany],
+            [Country].[Country].[Belgium], [Country].[Country].[Italy],
+            [Country].[Country].[Ireland], [Country].[Country].[Greece]}
+    MEMBER [Measures].[GDP per capita rank] AS
+        IIF(IsEmpty([Measures].[GDP per capita]), NULL,
+            Rank([Country].CurrentMember, [Countries], [Measures].[GDP per capita])),
+        FORMAT_STRING = '#0'
+    MEMBER [Measures].[GDP per capita as percentage compared to 1990] AS
+        IIF(IsEmpty([Measures].[GDP per capita]) OR
+            IsEmpty(([Measures].[GDP per capita], [Time].[Decade].[1900])), NULL,
+            [Measures].[GDP per capita] /
+            ([Measures].[GDP per capita], [Time].[Decade].[1900])),
+        FORMAT_STRING = '#0%'
+SELECT
+    {[Time].[Decade].[1900] : [Time].[Decade].[2020]} ON COLUMNS,
+    NON EMPTY CrossJoin([Countries],
+        {[Measures].[GDP per capita], [Measures].[GDP per capita rank],
+            [Measures].[GDP per capita as percentage compared to 1990]}) ON ROWS
 FROM [Economy]
-WHERE [Measures].[GDP per capita relative to Portugal]
+
+
+query 2 Society
+WITH
+    SET [Countries] AS
+        {[Country].[Country].[Portugal], [Country].[Country].[Spain],
+            [Country].[Country].[France], [Country].[Country].[Germany],
+            [Country].[Country].[Belgium], [Country].[Country].[Italy],
+            [Country].[Country].[Ireland], [Country].[Country].[Greece]}
+    MEMBER [Measures].[GNI per capita relative to Portugal] AS
+        [Measures].[GNI per capita] /
+        ([Measures].[GNI per capita], [Country].[Country].[Portugal]),
+        FORMAT_STRING = '#0.0%'
+    MEMBER [Measures].[Life expectancy gap vs Portugal] AS
+        [Measures].[Life expectancy] -
+        ([Measures].[Life expectancy], [Country].[Country].[Portugal]),
+        FORMAT_STRING = '+#0.0;-#0.0'
+SELECT
+    {[Time].[Decade].[1960] : [Time].[Decade].[2020]} ON COLUMNS,
+    NON EMPTY CrossJoin([Countries],
+        {[Measures].[GNI per capita], [Measures].[GNI per capita relative to Portugal],
+            [Measures].[Life expectancy], [Measures].[Life expectancy gap vs Portugal]}) ON ROWS
+FROM [Society]

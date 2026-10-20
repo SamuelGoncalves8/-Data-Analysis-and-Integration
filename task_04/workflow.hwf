@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workflow>
-  <name>filename</name>
+  <name>workflow</name>
   <name_sync_with_filename>Y</name_sync_with_filename>
   <description/>
   <extended_description/>
@@ -42,7 +42,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/dim_country.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/dim_country.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -70,7 +70,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/dim_sector.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/dim_sector.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -98,7 +98,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/dim_time.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/dim_time.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -126,7 +126,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/events.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/events.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -154,7 +154,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/fact_society.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/fact_society.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -182,7 +182,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/fact_economy.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/fact_economy.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -210,7 +210,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>/home/martim/Desktop/GTI/Project/task_04/fact_sector.hpl</filename>
+      <filename>${PROJECT_HOME}/task_04/fact_sector.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>

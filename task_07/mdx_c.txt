@@ -1,12 +1,46 @@
+query 1 Economy
 WITH
-    MEMBER [Measures].[PT GDP per capita] AS
-        ([Measures].[GDP per capita], [Country].[Country].[Portugal])
-    MEMBER [Measures].[Western Europe GDP per capita] AS
-        ([Measures].[GDP per capita], [Country].[Country Group].[Western Europe])
-    MEMBER [Measures].[PT to Western Europe ratio] AS
-        [Measures].[PT GDP per capita] / [Measures].[Western Europe GDP per capita],
-        FORMAT_STRING = '#0.00%'
+    SET [WE] AS [Country].[Country Group].[Western Europe].Children
+    SET [Countries] AS {[Country].[Country].[Portugal], [WE]}
+    MEMBER [Measures].[Portugal GDP per capita compared to the country] AS
+        IIF(IsEmpty([Measures].[GDP per capita]), NULL,
+            IIF([Country].CurrentMember IS [Country].[Country].[Portugal],
+                [Measures].[GDP per capita] / Avg([WE], [Measures].[GDP per capita]),
+                ([Measures].[GDP per capita], [Country].[Country].[Portugal]) /
+                [Measures].[GDP per capita])),
+        FORMAT_STRING = '#0.0%'
+    MEMBER [Measures].[Percentual change] AS
+        IIF(IsEmpty(([Measures].[Portugal GDP per capita compared to the country], [Time].CurrentMember.PrevMember)), NULL,
+            ([Measures].[Portugal GDP per capita compared to the country] -
+                ([Measures].[Portugal GDP per capita compared to the country], [Time].CurrentMember.PrevMember))),
+        FORMAT_STRING = '+#0.0%;-#0.0%'
 SELECT
-    {[Measures].[PT GDP per capita], [Measures].[Western Europe GDP per capita], [Measures].[PT to Western Europe ratio]} ON COLUMNS,
-    [Time].[Decade].Members ON ROWS
+    {[Time].[Decade].[1900] : [Time].[Decade].[2020]} ON COLUMNS,
+    NON EMPTY CrossJoin([Countries],
+        {[Measures].[GDP per capita], [Measures].[Portugal GDP per capita compared to the country],
+            [Measures].[Percentual change]}) ON ROWS
 FROM [Economy]
+
+Query 2 Society
+WITH
+    SET [WE] AS {[Country].[Country].[Portugal],
+                 [Country].[Country Group].[Western Europe].Children}
+    MEMBER [Measures].[Portugal GNI per capita compared to the country] AS
+        ([Measures].[GNI per capita], [Country].[Country].[Portugal]) /
+        [Measures].[GNI per capita],
+        FORMAT_STRING = '#0.0%'
+    MEMBER [Measures].[Percentual change] AS
+        IIF(IsEmpty(([Measures].[Portugal GNI per capita compared to the country], [Time].CurrentMember.PrevMember)), NULL,
+            ([Measures].[Portugal GNI per capita compared to the country] -
+                ([Measures].[Portugal GNI per capita compared to the country], [Time].CurrentMember.PrevMember))),
+        FORMAT_STRING = '+#0.0%;-#0.0%'
+    MEMBER [Measures].[Portugal life expectancy gap (in years)] AS
+        ([Measures].[Life expectancy], [Country].[Country].[Portugal]) -
+        [Measures].[Life expectancy],
+        FORMAT_STRING = '+#0.0;-#0.0'
+SELECT
+    {[Time].[Decade].[1960] : [Time].[Decade].[2020]} ON COLUMNS,
+    NON EMPTY CrossJoin([WE],
+        {[Measures].[Portugal GNI per capita compared to the country], [Measures].[Percentual change],
+            [Measures].[Portugal life expectancy gap (in years)]}) ON ROWS
+FROM [Society]
