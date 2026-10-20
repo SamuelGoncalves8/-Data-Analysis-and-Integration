@@ -98,11 +98,21 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Measure name="Value Added PCT" column="value_added_pct_gdp" aggregator="sum" visible="true">
+    <Measure name="Value Added GDP Base" column="value_added_pct_gdp" aggregator="avg" visible="false">
     </Measure>
-    <Measure name="Value Added USD" column="value_added_usd" aggregator="sum" visible="true">
+    <Measure name="Value Added USD Base" column="value_added_usd" aggregator="sum" visible="false">
     </Measure>
-    <Measure name="Employment" column="employment_pct" aggregator="sum" visible="true">
+    <Measure name="Employment" column="employment_pct" aggregator="avg" visible="true">
     </Measure>
+    <CalculatedMember name="Value Added PCT" formatString="0.00" dimension="Measures" visible="true">
+      <Formula>
+        <![CDATA[IIF([Sector].[Sector Hierarchy].CurrentMember.Level.Name = "Broad" AND [Sector].[Sector Hierarchy].CurrentMember.Name = "Secondary", ([Measures].[Value Added GDP Base], [Sector].[Sector Hierarchy].[Sector].&[Industry]), [Measures].[Value Added GDP Base])]]>
+      </Formula>
+    </CalculatedMember>
+    <CalculatedMember name="Value Added USD" formatString="0.00" dimension="Measures" visible="true">
+      <Formula>
+        <![CDATA[IIF([Sector].[Sector Hierarchy].CurrentMember.Level.Name = "Broad" AND [Sector].[Sector Hierarchy].CurrentMember.Name = "Secondary", ([Measures].[Value Added USD Base], [Sector].[Sector Hierarchy].[Sector].&[Industry]), [Measures].[Value Added USD Base])]]>
+      </Formula>
+    </CalculatedMember>
   </Cube>
 </Schema>
