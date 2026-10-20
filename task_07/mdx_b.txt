@@ -9,7 +9,7 @@ WITH
         IIF(IsEmpty([Measures].[GDP per capita]), NULL,
             Rank([Country].CurrentMember, [Countries], [Measures].[GDP per capita])),
         FORMAT_STRING = '#0'
-    MEMBER [Measures].[GDP per capita as percentage compared to 1990] AS
+    MEMBER [Measures].[GDP per capita as percentage compared to 1900] AS
         IIF(IsEmpty([Measures].[GDP per capita]) OR
             IsEmpty(([Measures].[GDP per capita], [Time].[Decade].[1900])), NULL,
             [Measures].[GDP per capita] /
@@ -18,8 +18,8 @@ WITH
 SELECT
     {[Time].[Decade].[1900] : [Time].[Decade].[2020]} ON COLUMNS,
     NON EMPTY CrossJoin([Countries],
-        {[Measures].[GDP per capita], [Measures].[GDP per capita rank],
-            [Measures].[GDP per capita as percentage compared to 1990]}) ON ROWS
+        {[Measures].[GDP], [Measures].[GDP per capita], [Measures].[GDP per capita rank],
+            [Measures].[GDP per capita as percentage compared to 1900]}) ON ROWS
 FROM [Economy]
 
 
