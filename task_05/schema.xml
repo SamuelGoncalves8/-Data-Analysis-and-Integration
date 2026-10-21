@@ -102,17 +102,13 @@
     </Measure>
     <Measure name="Value Added USD Base" column="value_added_usd" aggregator="sum" visible="false">
     </Measure>
-    <Measure name="Employment" column="employment_pct" aggregator="avg" visible="true">
+    <Measure name="Employment Base" column="employment_pct" aggregator="avg" visible="false">
     </Measure>
-    <CalculatedMember name="Value Added PCT" formatString="0.00" dimension="Measures" visible="true">
-      <Formula>
-        <![CDATA[IIF([Sector].[Sector Hierarchy].CurrentMember.Level.Name = "Broad" AND [Sector].[Sector Hierarchy].CurrentMember.Name = "Secondary", ([Measures].[Value Added GDP Base], [Sector].[Sector Hierarchy].[Sector].&[Industry]), [Measures].[Value Added GDP Base])]]>
-      </Formula>
+    <CalculatedMember name="Value Added PCT" formatString="0.00" formula="IIF([Sector].CurrentMember.Level.Name = &#34;Broad&#34; AND [Sector].CurrentMember.Name = &#34;Secondary&#34;, ([Measures].[Value Added GDP Base], [Sector].[Secondary].[Industry]), [Measures].[Value Added GDP Base])" dimension="Measures" visible="true">
     </CalculatedMember>
-    <CalculatedMember name="Value Added USD" formatString="0.00" dimension="Measures" visible="true">
-      <Formula>
-        <![CDATA[IIF([Sector].[Sector Hierarchy].CurrentMember.Level.Name = "Broad" AND [Sector].[Sector Hierarchy].CurrentMember.Name = "Secondary", ([Measures].[Value Added USD Base], [Sector].[Sector Hierarchy].[Sector].&[Industry]), [Measures].[Value Added USD Base])]]>
-      </Formula>
+    <CalculatedMember name="Value Added USD" formatString="0.00" formula="IIF([Sector].CurrentMember.Level.Name = &#34;Broad&#34; AND [Sector].CurrentMember.Name = &#34;Secondary&#34;, ([Measures].[Value Added USD Base], [Sector].[Secondary].[Industry]), [Measures].[Value Added USD Base])" dimension="Measures" visible="true">
+    </CalculatedMember>
+    <CalculatedMember name="Employment" formatString="0.00" formula="IIF([Sector].CurrentMember.Level.Name = &#34;Broad&#34; AND [Sector].CurrentMember.Name = &#34;Secondary&#34;, ([Measures].[Employment Base], [Sector].[Secondary].[Industry]), [Measures].[Employment Base])" dimension="Measures" visible="true">
     </CalculatedMember>
   </Cube>
 </Schema>
